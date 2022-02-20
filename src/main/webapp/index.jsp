@@ -15,6 +15,6 @@ Enter your name: <input type="text" name="yourName" size="20">
 </form>
 
  <button onclick="window.location.href='http://localhost:8085/lesson14/register.jsp';"> Click to go to user registration </button>
-
+NODESU
 </body>
 </html>
