@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+
+    tools {
+        // Install the Maven version configured as "M3" and add it to the path.
+        maven "maven 3.8.2"
+    }
+
+    stages {
+        stage('Git Checkout') {
+            steps {
+              checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: '15c2d564-ea0b-4f59-a5c9-4f694583ecb9', url: 'https://github.com/zanceballos/maven-web-project']]])
+            }
+        }
+         stage('Build') {
+            steps {
+               bat 'mvn clean install --file pom.xml'
+            }
+           
+        }
+        stage('Deploy to Tomcat') {
+            steps {
+              deploy adapters: [tomcat7(credentialsId: '2d5b45b3-7fec-4717-8200-829b133976eb', path: '', url: 'http://localhost:8095/')], contextPath: 'maven-web-project-experiment', war: '**/*.war'
+            }
+        }
+}
+
+}
